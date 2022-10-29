@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Панель редактирования</title>
+    <style>
+        table, th, td {
+          border: 2px solid black;
+          padding: 5px;
+        }
+        div, span, h3, h5, table{
+            margin-left: 2%;
+        }
+        </style>
+</head>
+<body>
+    <p><h3>Добавить</h3></p>
+    <form class="form-inline" method="post">
+        <div class="form-group">
+          <label class="sr-only" for="input">user_id</label>
+          <input type="input" class="form-control" id="user_id" placeholder="user_id">
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="inputPassword">role</label>
+          <input type="input" class="form-control" id="role" placeholder="role">
+        </div>
+        <button type="button" class="btn btn-primary" id="send" onclick="onSendPress()">Добавить</button>
+        <span id="message_form_add"></span>
+      </form>
+      <p><h3>Удалить по <i>user_id</i></h3></p>
+      <form class="form-inline" method="post">
+        <div class="form-group">
+          <label class="sr-only" for="input">user_id</label>
+          <input type="input" class="form-control" id="user_id_delete" placeholder="user_id">
+        </div>
+        <button type="button" class="btn btn-primary" id="delete_user_id" onclick="onDeleteUserIdPress()">Удалить</button>
+        <span id="message_form_delete_user_id"></span>
+      </form>
+      <p><h3>Удалить по <i>role</i></h3></p>
+      <form class="form-inline" method="post">
+        <div class="form-group">
+          <label class="sr-only" for="input">user_id</label>
+          <input type="input" class="form-control" id="role_id_delete" placeholder="role">
+        </div>
+        <button type="button" class="btn btn-primary" id="delete_role" onclick="onDeleteRole()">Удалить</button>
+        <span id="message_form_delete_role"></span>
+      </form>
+
+
+      <p><h3>Обновить роль у пользователя</h3></p>
+    <form class="form-inline" method="post">
+        <div class="form-group">
+          <label class="sr-only" for="input">user_id</label>
+          <input type="input" class="form-control" id="user_id_update" placeholder="user_id">
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="inputPassword">role</label>
+          <input type="input" class="form-control" id="role_update" placeholder="role">
+        </div>
+        <button type="button" class="btn btn-primary" id="update" onclick="onUpdatePressed()">Обновить</button>
+        <span id="message_form_update"></span>
+      </form>
+
+      <p><h3>Переименование роли</h3></p>
+      <form class="form-inline" method="post">
+          <div class="form-group">
+            <label class="sr-only" for="input">old_role</label>
+            <input type="input" class="form-control" id="rename_old_role" placeholder="old_role">
+          </div>
+          <div class="form-group">
+            <label class="sr-only" for="inputPassword">new_role</label>
+            <input type="input" class="form-control" id="rename_new_role" placeholder="new_role">
+          </div>
+          <button type="button" class="btn btn-primary" id="renamerole" onclick="onRenameRolePressed()">Переименовать</button>
+          <span id="message_form_rename_role"></span>
+        </form>
+
+      <p><h3>БД:</h3></p>
+      <script>
+
+        let querySeverAddress = 'http://localhost:8080'
+        function reload(){
+        axios.get(querySeverAddress).then(resp => {
+        let table_db = document.getElementById("db")
+        table_db.innerHTML = "<tr>"+"<th>id</th>"+"<th>user_id</th>"+"<th>role</th>"+"</tr>"
+        var obj = JSON.parse(JSON.stringify(resp.data));
+        for(i = 0; i < obj.length; i++){
+            table_db.innerHTML +="<tr>"+"<td>"+obj[i].id+"</td>"+"<td>"+obj[i].user_id+"</td>"+"<td>"+obj[i].role+"</td>"+"</tr>"     
+        }     
+
+        });
+        
+        }
+        function onSendPress() {
+            axios.post(querySeverAddress+"/add",{
+            user_id: document.getElementById("user_id").value,
+            role: document.getElementById("role").value
+            }).then((response) => {
+            console.log(response);
+            document.getElementById('message_form_add').innerHTML = "<h5 style=\"color:green;\" class=\"font-weight-bold\">Отправлено!</h5>"
+            }, (error) => {
+            console.log(error);
+            document.getElementById('message_form_add').innerHTML = "<h5 style=\"color:red;\" class=\"font-weight-bold\">Произошла ошибка при отправке запроса!</h5>"
+            })
+
+            reload()
+            setTimeout(() => {
+                document.getElementById('message_form_add').innerHTML = ""
+            }, 5 * 1000);
+        }
+
+
+        function onDeleteUserIdPress() {
+            axios.post(querySeverAddress+"/deluser",{
+            user_id: document.getElementById("user_id_delete").value,
+            }).then((response) => {
+            console.log(response);
+            document.getElementById('message_form_delete_user_id').innerHTML = "<h5 style=\"color:green;\" class=\"font-weight-bold\">Отправлено!</h5>"
+            }, (error) => {
+            console.log(error);
+            document.getElementById('message_form_delete_user_id').innerHTML = "<h5 style=\"color:red;\" class=\"font-weight-bold\">Произошла ошибка при отправке запроса!</h5>"
+            })
+
+            reload()
+
+
+            setTimeout(() => {
+                document.getElementById('message_form_delete_user_id').innerHTML = ""
+            }, 5 * 1000);
+        }
+        function onDeleteRole() {
+            axios.post(querySeverAddress+"/delrole",{
+            role: document.getElementById("role_id_delete").value
+            }).then((response) => {
+            console.log(response);
+            document.getElementById('message_form_delete_role').innerHTML = "<h5 style=\"color:green;\" class=\"font-weight-bold\">Отправлено!</h5>"
+            }, (error) => {
+            console.log(error);
+            document.getElementById('message_form_delete_role').innerHTML = "<h5 style=\"color:red;\" class=\"font-weight-bold\">Произошла ошибка при отправке запроса!</h5>"
+            })
+            
+
+            reload()
+
+            setTimeout(() => {
+                document.getElementById('message_form_delete_role').innerHTML = ""
+            }, 5 * 1000);
+        }
+
+        function onUpdatePressed() {
+            axios.post(querySeverAddress+"/updaterole",{
+            role: document.getElementById("role_update").value,
+            user_id: document.getElementById("user_id_update").value
+            }).then((response) => {
+            console.log(response);
+            document.getElementById('message_form_update').innerHTML = "<h5 style=\"color:green;\" class=\"font-weight-bold\">Отправлено!</h5>"
+            }, (error) => {
+            console.log(error);
+            document.getElementById('message_form_update').innerHTML = "<h5 style=\"color:red;\" class=\"font-weight-bold\">Произошла ошибка при отправке запроса!</h5>"
+            })
+            
+
+            reload()
+
+            setTimeout(() => {
+                document.getElementById('message_form_update').innerHTML = ""
+            }, 5 * 1000);
+        }
+        function onRenameRolePressed() {
+            axios.post(querySeverAddress+"/renamerole",{
+            role: document.getElementById("rename_old_role").value,
+            new_role: document.getElementById("rename_new_role").value
+            }).then((response) => {
+            console.log(response);
+            document.getElementById('message_form_rename_role').innerHTML = "<h5 style=\"color:green;\" class=\"font-weight-bold\">Отправлено!</h5>"
+            }, (error) => {
+            console.log(error);
+            document.getElementById('message_form_rename_role').innerHTML = "<h5 style=\"color:red;\" class=\"font-weight-bold\">Произошла ошибка при отправке запроса!</h5>"
+            })
+            
+
+            reload()
+
+            setTimeout(() => {
+                document.getElementById('message_form_rename_role').innerHTML = ""
+            }, 5 * 1000);
+        }
+
+        reload()
+      </script>
+      <table class="card" id="db"></table>
+</body>
+</html>
