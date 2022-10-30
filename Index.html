@@ -87,9 +87,9 @@
       <p><h3>БД:</h3></p>
       <script>
 
-        let querySeverAddress = 'http://localhost:8080'
+        let querySeverAddress = ''
         function reload(){
-        axios.get(querySeverAddress).then(resp => {
+        axios.get(querySeverAddress+'/').then(resp => {
         let table_db = document.getElementById("db")
         table_db.innerHTML = "<tr>"+"<th>id</th>"+"<th>user_id</th>"+"<th>role</th>"+"</tr>"
         var obj = JSON.parse(JSON.stringify(resp.data));
