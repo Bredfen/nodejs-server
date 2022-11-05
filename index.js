@@ -50,9 +50,9 @@ app.get('/', (req, res) => {
     mysqlConnection.query(query,
     (err, rows, fields) => {
         if (!err)
-            res.send(rows).statusCode(200)
+            res.send(rows).status(200)
         else
-            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).status(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+ new Date().toLocaleTimeString()+"]"
         console.log((!err)?currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
@@ -63,9 +63,9 @@ app.get('/getuser/:user_id', (req, res) => {
     mysqlConnection.query(query,[req.params.user_id],
     (err, rows, fields) => {
         if (!err)
-            res.send(rows).statusCode(200)
+            res.send(rows).status(200)
         else
-            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).status(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+new Date().toLocaleTimeString()+"]"
         console.log((!err)?currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
@@ -77,9 +77,9 @@ app.get('/getrole/:role', (req, res) => {
     mysqlConnection.query(query,[req.params.role],
     (err, rows, fields) => {
         if (!err)
-            res.send(rows).statusCode(200)
+            res.send(rows).status(200)
         else
-            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).status(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+new Date().toLocaleTimeString()+"]"
         console.log((!err)?+currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
@@ -91,9 +91,9 @@ app.post('/add', (req, res) => {
     mysqlConnection.query(query,[req.body.user_id, req.body.role],
     (err, rows, fields) => {
         if (!err)
-            res.send(rows).statusCode(200)
+            res.send(rows).status(200)
         else
-            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).status(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+new Date().toLocaleTimeString()+"]"
         console.log((!err)?currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
@@ -105,9 +105,9 @@ app.post('/deluser', (req, res) => {
     mysqlConnection.query(query,[req.body.user_id],
     (err, rows, fields) => {
         if (!err)
-            res.send(rows).statusCode(200)
+            res.send(rows).status(200)
         else
-            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).status(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+new Date().toLocaleTimeString()+"]"
         console.log((!err)?currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
@@ -120,9 +120,9 @@ app.post('/delrole', (req, res) => {
     mysqlConnection.query(query, [req.body.role],
     (err, rows, fields) => {
         if (!err)
-            res.send(rows).statusCode(200)
+            res.send(rows).status(200)
         else
-            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).status(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+new Date().toLocaleTimeString()+"]"
         console.log((!err)?currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
@@ -134,9 +134,9 @@ app.post('/updaterole', (req, res) => {
     mysqlConnection.query(query, [req.body.role, req.body.user_id],
     (err, rows, fields) => {
         if (!err)
-            res.send(rows).statusCode(200)
+            res.send(rows).status(200)
         else
-            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).status(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+new Date().toLocaleTimeString()+"]"
         console.log((!err)?currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
@@ -148,9 +148,9 @@ app.post('/renamerole', (req, res) => {
     mysqlConnection.query(query, [req.body.new_role, req.body.role],
     (err, rows, fields) => {
         if (!err)
-            res.send(rows).statusCode(200)
+            res.send(rows).status(200)
         else
-            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).status(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+new Date().toLocaleTimeString()+"]"
         console.log((!err)?currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
