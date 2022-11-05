@@ -49,7 +49,10 @@ app.get('/', (req, res) => {
 
     mysqlConnection.query(query,
     (err, rows, fields) => {
-        res.send((!err)?rows:"Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
+        if (!err)
+            res.send(rows).statusCode(200)
+        else
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+ new Date().toLocaleTimeString()+"]"
         console.log((!err)?currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
@@ -59,7 +62,10 @@ app.get('/getuser/:user_id', (req, res) => {
     let query = "SELECT * FROM `users` where user_id = ?"
     mysqlConnection.query(query,[req.params.user_id],
     (err, rows, fields) => {
-        res.send((!err)?rows:"Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
+        if (!err)
+            res.send(rows).statusCode(200)
+        else
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+new Date().toLocaleTimeString()+"]"
         console.log((!err)?currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
@@ -70,7 +76,10 @@ app.get('/getrole/:role', (req, res) => {
     let query = "SELECT * FROM `users` where role = ?"
     mysqlConnection.query(query,[req.params.role],
     (err, rows, fields) => {
-        res.send((!err)?rows:"Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
+        if (!err)
+            res.send(rows).statusCode(200)
+        else
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+new Date().toLocaleTimeString()+"]"
         console.log((!err)?+currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
@@ -81,7 +90,10 @@ app.post('/add', (req, res) => {
     let query = "INSERT INTO `users`(`user_id`, `role`) VALUES (?,?)"   
     mysqlConnection.query(query,[req.body.user_id, req.body.role],
     (err, rows, fields) => {
-        res.send((!err)?"Добавлено!":"Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
+        if (!err)
+            res.send(rows).statusCode(200)
+        else
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+new Date().toLocaleTimeString()+"]"
         console.log((!err)?currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
@@ -92,7 +104,10 @@ app.post('/deluser', (req, res) => {
     let query = "DELETE FROM `users` WHERE `user_id` = ?"   
     mysqlConnection.query(query,[req.body.user_id],
     (err, rows, fields) => {
-        res.send((!err)?"Удалено по user_id! Аргумент: "+req.body.user_id:"Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
+        if (!err)
+            res.send(rows).statusCode(200)
+        else
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+new Date().toLocaleTimeString()+"]"
         console.log((!err)?currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
@@ -104,7 +119,10 @@ app.post('/delrole', (req, res) => {
     let query = "DELETE  FROM `users` WHERE `role` = ?"   
     mysqlConnection.query(query, [req.body.role],
     (err, rows, fields) => {
-        res.send((!err)?"Удалено role! Аргумент: "+req.body.role:"Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
+        if (!err)
+            res.send(rows).statusCode(200)
+        else
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+new Date().toLocaleTimeString()+"]"
         console.log((!err)?currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
@@ -115,7 +133,10 @@ app.post('/updaterole', (req, res) => {
     let query = "UPDATE users SET role = ? WHERE user_id = ?"   
     mysqlConnection.query(query, [req.body.role, req.body.user_id],
     (err, rows, fields) => {
-        res.send((!err)?"Обновлено role у пользователя! Аргумент: "+req.body.role:"Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
+        if (!err)
+            res.send(rows).statusCode(200)
+        else
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+new Date().toLocaleTimeString()+"]"
         console.log((!err)?currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
@@ -126,7 +147,10 @@ app.post('/renamerole', (req, res) => {
     let query = "UPDATE users SET role = ? WHERE role = ?"   
     mysqlConnection.query(query, [req.body.new_role, req.body.role],
     (err, rows, fields) => {
-        res.send((!err)?"Переименовано role! Аргумент: "+req.body.role:"Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
+        if (!err)
+            res.send(rows).statusCode(200)
+        else
+            res.send("Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2)).statusCode(500)
         let currentStrDate = "["+new Date().toLocaleDateString()+"]["+new Date().toLocaleTimeString()+"]"
         console.log((!err)?currentStrDate+"[SUCCESS] Query from / [->] "+query:currentStrDate+"[EROR] Failed to execute query | "+query+" |\nCODE: "+JSON.stringify(err, undefined, 2))
     })
